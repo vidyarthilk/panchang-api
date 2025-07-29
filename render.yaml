@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: panchang-api
+    env: python
+    buildCommand: ""
+    startCommand: "python panchang_api.py"
+    plan: free

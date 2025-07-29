@@ -1,0 +1,10 @@
+POST http://127.0.0.1:5000/calculate
+Content-Type: application/json
+
+{
+  "date": "2025-07-29",
+  "time": "12:30",
+  "latitude": 23.0225,
+  "longitude": 72.5714,
+  "timezone": 5.5
+}
