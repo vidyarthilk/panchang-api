@@ -72,8 +72,10 @@ def calculate_panchang():
         return jsonify(response)
 
     except Exception as e:
-        print("❌ Full traceback:\n", traceback.format_exc())
-        return jsonify({"error": str(e)}), 500
+    import traceback
+    print("❌ Full traceback:\n", traceback.format_exc())
+    return jsonify({"error": str(e)}), 500
+
 
 def get_nakshatra_lord(nakshatra):
     lords = ["Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"]
