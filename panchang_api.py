@@ -69,7 +69,6 @@ def calculate_panchang():
             "chandra_rashi": rashi_names[moon_rashi]
         }
         return jsonify(response)
-        
         except Exception as e:
         import traceback
         print("❌ Full traceback:\n", traceback.format_exc())
