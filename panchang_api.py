@@ -68,13 +68,12 @@ def calculate_panchang():
             "lagna_rashi": rashi_names[asc],
             "chandra_rashi": rashi_names[moon_rashi]
         }
-
         return jsonify(response)
-
-    except Exception as e:
-    import traceback
-    print("❌ Full traceback:\n", traceback.format_exc())
-    return jsonify({"error": str(e)}), 500
+        
+        except Exception as e:
+        import traceback
+        print("❌ Full traceback:\n", traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
 
 
 def get_nakshatra_lord(nakshatra):
