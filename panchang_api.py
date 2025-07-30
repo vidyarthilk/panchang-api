@@ -12,7 +12,7 @@ def calculate_panchang():
         data = request.get_json(force=True)
         print("🔥 Raw request data:", data)
 
-        # Extract input
+         # Extract input
         date_str = data['date']  # e.g. "2025-07-29"
         time_str = data['time']  # e.g. "12:30"
         latitude = float(data['latitude'])
@@ -70,7 +70,8 @@ def calculate_panchang():
         }
         return jsonify(response)
 
-    except Exception as e:
+        except Exception as e:
+        import traceback
         print("❌ Full traceback:\n", traceback.format_exc())
         return jsonify({"error": str(e)}), 500
 
