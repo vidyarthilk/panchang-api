@@ -12,7 +12,7 @@ def calculate_panchang():
         data = request.get_json(force=True)
         print("🔥 Raw request data:", data)
 
-         # Extract input
+        # Extract input
         date_str = data['date']  # e.g. "2025-07-29"
         time_str = data['time']  # e.g. "12:30"
         latitude = float(data['latitude'])
@@ -50,7 +50,7 @@ def calculate_panchang():
         # Solar month (mahino)
         mahino = get_solar_month(sun)
 
-        # Lagna and Chandra rashi (simplified real version)
+        # Lagna and Chandra rashi (simplified)
         asc = get_lagna_rashi(jd, latitude, longitude)
         moon_rashi = int(moon / 30)
 
@@ -68,13 +68,14 @@ def calculate_panchang():
             "lagna_rashi": rashi_names[asc],
             "chandra_rashi": rashi_names[moon_rashi]
         }
+
         return jsonify(response)
 
-        except Exception as e:
-        import traceback
+    except Exception as e:
         print("❌ Full traceback:\n", traceback.format_exc())
         return jsonify({"error": str(e)}), 500
 
+# ---- Utility Functions ----
 
 def get_nakshatra_lord(nakshatra):
     lords = ["Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"]
@@ -90,6 +91,7 @@ def get_lagna_rashi(jd, lat, lon):
     asc = swe.houses_ex(jd, lat, lon, b'A')[0][0]  # Ascendant
     return int(asc / 30)
 
+# ---- Main Entry ----
 if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 10000))
