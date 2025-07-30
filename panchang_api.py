@@ -13,44 +13,32 @@ def calculate_panchang():
         print("🔥 Raw request data:", data)
 
         # Extract input
-        date_str = data['date']  # e.g. "2025-07-29"
-        time_str = data['time']  # e.g. "12:30"
+        date_str = data['date']
+        time_str = data['time']
         latitude = float(data['latitude'])
         longitude = float(data['longitude'])
         timezone = float(data['timezone'])
 
         dt = datetime.datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
-        dt = dt - datetime.timedelta(hours=timezone)  # convert to UTC
+        dt = dt - datetime.timedelta(hours=timezone)
         jd = swe.julday(dt.year, dt.month, dt.day, dt.hour + dt.minute / 60.0)
 
-        print(f"🧮 Julian Day: {jd}")
-
-        # Get sun and moon longitudes
         sun = swe.calc_ut(jd, swe.SUN)[0]
         moon = swe.calc_ut(jd, swe.MOON)[0]
 
-        # Tithi calculation
         tithi_deg = (moon - sun) % 360
         tithi = int(tithi_deg / 12) + 1
 
-        # Nakshatra calculation
         nakshatra = int((moon % 360) / (360 / 27)) + 1
         nakshatra_swami = get_nakshatra_lord(nakshatra)
 
-        # Yoga calculation
         sun_moon_sum = (sun + moon) % 360
         yoga = int(sun_moon_sum / (360 / 27)) + 1
 
-        # Paksha
         paksha = "Shukla" if tithi <= 15 else "Krishna"
-
-        # Vikram Samvat
         vikram_samvat = dt.year + 57
-
-        # Solar month (mahino)
         mahino = get_solar_month(sun)
 
-        # Lagna and Chandra rashi (simplified)
         asc = get_lagna_rashi(jd, latitude, longitude)
         moon_rashi = int(moon / 30)
 
@@ -72,6 +60,7 @@ def calculate_panchang():
         return jsonify(response)
 
     except Exception as e:
+        import traceback
         print("❌ Full traceback:\n", traceback.format_exc())
         return jsonify({"error": str(e)}), 500
 
