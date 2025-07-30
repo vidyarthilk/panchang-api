@@ -43,10 +43,11 @@ def calculate_panchang():
         print(f"☀️ Sun: {sun_long}°, 🌙 Moon: {moon_long}°")
 
         # Proceed as before...
-
+return jsonify({...})  # final response
     except Exception as e:
-        print(f"❌ CRASH: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+    import traceback
+    print("❌ Full traceback:\n", traceback.format_exc())
+    return jsonify({"error": str(e)}), 500
 
 
     # Tithi
