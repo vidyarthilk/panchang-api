@@ -46,7 +46,7 @@ def calculate_panchang():
         # Rashi Calculations
         lagna_degree = get_lagna_degree(jd, latitude, longitude)
         asc = get_lagna_rashi(jd, latitude, longitude)
-        "lagna_rashi": rashi_names[asc]
+        "lagna_rashi": rashi_names[asc],
         moon_rashi = int(moon_long / 30)
 
         rashi_names = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya",
