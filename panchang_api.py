@@ -20,12 +20,9 @@ def calculate_panchang():
         dt_utc = dt - datetime.timedelta(hours=timezone)
         jd = swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour + dt_utc.minute / 60)
 
-<<<<<<< HEAD
-        sun_calc = swe.calc_ut(jd, swe.SUN)
-        sun_long = sun_calc[0] if isinstance(sun_calc, (list, tuple)) else sun_calc
 
-        moon_calc = swe.calc_ut(jd, swe.MOON)
-        moon_long = moon_calc[0] if isinstance(moon_calc, (list, tuple)) else moon_calc
+        sun_long = swe.calc_ut(jd, swe.SUN)[0][0]
+        moon_long = swe.calc_ut(jd, swe.MOON)[0][0]
 
 
         # Tithi Calculation
