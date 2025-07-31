@@ -1,87 +1,86 @@
 from flask import Flask, request, jsonify
 import swisseph as swe
 import datetime
-import traceback
 
 app = Flask(__name__)
-swe.set_ephe_path('.')  # Local folder or set to eph file path
+
+swe.set_ephe_path("/usr/share/ephe")  # adjust path if needed
+
+def get_tithi(jd, moon_lon, sun_lon):
+    tithi = int(((moon_lon - sun_lon) % 360) / 12) + 1
+    return tithi
+
+def get_nakshatra(moon_lon):
+    nakshatra = int(moon_lon / (360 / 27))
+    return nakshatra
+
+def get_nakshatra_swami(nakshatra):
+    swamis = [
+        "Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury",
+    ]
+    return swamis[nakshatra % 9]
+
+def get_yoga(sun_lon, moon_lon):
+    total = (sun_lon + moon_lon) % 360
+    yoga = int(total / (360 / 27))
+    return yoga
+
+def get_lagna_rashi(jd, lat, lon):
+    try:
+        houses, ascmc = swe.houses_ex(jd, lat, lon, b'A')
+        asc = ascmc[0]
+        return int(asc / 30)
+    except Exception as e:
+        print("Error in get_lagna_rashi:", e)
+        return 0  # default to Mesha (0)
 
 @app.route('/calculate', methods=['POST'])
-def calculate_panchang():
+def calculate():
     try:
-        data = request.get_json(force=True)
-        print("🔥 Raw request data:", data)
+        data = request.get_json()
 
-        # Extract input
-        date_str = data['date']
-        time_str = data['time']
-        latitude = float(data['latitude'])
-        longitude = float(data['longitude'])
-        timezone = float(data['timezone'])
+        date = data.get("date")
+        time = data.get("time")
+        latitude = data.get("latitude")
+        longitude = data.get("longitude")
+        timezone = float(data.get("timezone"))
 
-        dt = datetime.datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
+        # Combine date and time into datetime object
+        dt = datetime.datetime.strptime(f"{date} {time}", "%Y-%m-%d %H:%M")
         dt = dt - datetime.timedelta(hours=timezone)
         jd = swe.julday(dt.year, dt.month, dt.day, dt.hour + dt.minute / 60.0)
 
         sun = swe.calc_ut(jd, swe.SUN)[0]
         moon = swe.calc_ut(jd, swe.MOON)[0]
 
-        tithi_deg = (moon - sun) % 360
-        tithi = int(tithi_deg / 12) + 1
+        tithi = get_tithi(jd, moon, sun)
+        nakshatra_num = get_nakshatra(moon)
+        nakshatra_name = f"Nakshatra {nakshatra_num}"
+        yoga_num = get_yoga(sun, moon)
 
-        nakshatra = int((moon % 360) / (360 / 27)) + 1
-        nakshatra_swami = get_nakshatra_lord(nakshatra)
-
-        sun_moon_sum = (sun + moon) % 360
-        yoga = int(sun_moon_sum / (360 / 27)) + 1
+        chandra_rashi = int(moon / 30)
+        lagna_rashi = get_lagna_rashi(jd, latitude, longitude)
 
         paksha = "Shukla" if tithi <= 15 else "Krishna"
         vikram_samvat = dt.year + 57
-        mahino = get_solar_month(sun)
+        mahino = "Dhanu (Solar Month)"  # mock for now
+        nakshatra_swami = get_nakshatra_swami(nakshatra_num)
 
-        asc = get_lagna_rashi(jd, latitude, longitude)
-        moon_rashi = int(moon / 30)
-
-        rashi_names = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya",
-                       "Tula", "Vrushchik", "Dhanu", "Makar", "Kumbh", "Meen"]
-
-        response = {
+        return jsonify({
             "tithi": tithi,
-            "nakshatra": f"Nakshatra {nakshatra}",
+            "nakshatra": nakshatra_name,
             "nakshatra_swami": nakshatra_swami,
-            "yoga": f"Yoga {yoga}",
+            "yoga": f"Yoga {yoga_num}",
             "paksha": paksha,
             "vikram_samvat": vikram_samvat,
             "mahino": mahino,
-            "lagna_rashi": rashi_names[asc],
-            "chandra_rashi": rashi_names[moon_rashi]
-        }
-
-        return jsonify(response)
+            "lagna_rashi": f"Rashi {lagna_rashi}",
+            "chandra_rashi": f"Rashi {chandra_rashi}"
+        })
 
     except Exception as e:
-        import traceback
-        print("❌ Full traceback:\n", traceback.format_exc())
+        print("Exception:", str(e))
         return jsonify({"error": str(e)}), 500
 
-# ---- Utility Functions ----
-
-def get_nakshatra_lord(nakshatra):
-    lords = ["Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"]
-    return lords[(nakshatra - 1) % 9]
-
-def get_solar_month(sun_longitude):
-    months = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya",
-              "Tula", "Vrushchik", "Dhanu", "Makar", "Kumbh", "Meen"]
-    month_index = int(sun_longitude / 30)
-    return f"{months[month_index]} (Solar Month)"
-
-def get_lagna_rashi(jd, lat, lon):
-    asc = swe.houses_ex(jd, lat, lon, b'A')[0][0]  # Ascendant
-    return int(asc / 30)
-
-# ---- Main Entry ----
 if __name__ == '__main__':
-    import os
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(port=10000)
