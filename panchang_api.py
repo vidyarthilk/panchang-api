@@ -27,7 +27,8 @@ def calculate_panchang():
 
         # Get longitudes (✅ Fixed unpacking)
         sun_long = swe.calc_ut(jd, swe.SUN)[0][0]
-        moon_long = swe.calc_ut(jd, swe.MOON)[0][0]
+        moon_calc = swe.calc_ut(jd, swe.MOON)
+        moon_long = moon_calc[0] if isinstance(moon_calc[0], float) else moon_calc[0][0]
 
         # Panchang Calculations
         tithi_deg = (moon_long - sun_long) % 360
@@ -44,7 +45,8 @@ def calculate_panchang():
 
         # Rashi Calculations
         lagna_degree = get_lagna_degree(jd, latitude, longitude)
-        asc = int(lagna_degree / 30)
+        asc = get_lagna_rashi(jd, latitude, longitude)
+        "lagna_rashi": rashi_names[asc]
         moon_rashi = int(moon_long / 30)
 
         rashi_names = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya",
@@ -98,9 +100,12 @@ def get_solar_month(sun_longitude):
     month_index = int(sun_longitude / 30)
     return f"{months[month_index]} (Solar Month)"
 
-def get_lagna_degree(jd, lat, lon):
-    houses, ascmc = swe.houses_ex(jd, lat, lon, b'A')
-    return ascmc[0]  # 0 index is ASC (Lagna)
+def get_lagna_rashi(jd, lat, lon):
+    # houses_ex returns (houses, ascmc) — ascmc[0] is ASC (Lagna degree)
+    result = swe.houses_ex(jd, lat, lon, b'A')
+    asc = result[1][0]  # Safe access to ASC value
+    return int(asc / 30)  # 360° divided into 12 signs
+
 
 # Main entry
 if __name__ == '__main__':
