@@ -5,7 +5,7 @@ import traceback
 import os
 
 app = Flask(__name__)
-swe.set_ephe_path('.')  # eph files ni path
+swe.set_ephe_path('.')  # eph files path
 
 @app.route('/calculate', methods=['POST'])
 def calculate_panchang():
@@ -13,21 +13,22 @@ def calculate_panchang():
         data = request.get_json(force=True)
         print("🔥 Request received:", data)
 
-        # Input extract
         date_str = data['date']
         time_str = data['time']
         latitude = float(data['latitude'])
         longitude = float(data['longitude'])
         timezone = float(data['timezone'])
 
-        # Convert to UTC datetime
         dt_local = datetime.datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
         dt_utc = dt_local - datetime.timedelta(hours=timezone)
         jd = swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour + dt_utc.minute / 60.0)
 
-        # Longitudes of Sun & Moon
-        sun_long = swe.calc_ut(jd, swe.SUN)[0]
-        moon_long = swe.calc_ut(jd, swe.MOON)[0]
+        # ✅ Properly unpack sun and moon longitude
+        sun_calc = swe.calc_ut(jd, swe.SUN)
+        sun_long = sun_calc[0] if isinstance(sun_calc, (list, tuple)) else sun_calc
+
+        moon_calc = swe.calc_ut(jd, swe.MOON)
+        moon_long = moon_calc[0] if isinstance(moon_calc, (list, tuple)) else moon_calc
 
         # Tithi
         tithi_deg = (moon_long - sun_long) % 360
@@ -45,12 +46,12 @@ def calculate_panchang():
         vikram_samvat = dt_local.year + 57
         mahino = get_solar_month(sun_long)
 
-        # Chandra Rashi (Moon Sign)
+        # Chandra Rashi (Moon)
         moon_rashi = int(moon_long / 30)
 
         # Lagna Rashi (Ascendant)
-        asc_data = swe.houses_ex(jd, latitude, longitude, b'A')
-        lagna_degree = asc_data[1][0]  # ascmc[0] = Ascendant degree
+        houses, ascmc = swe.houses_ex(jd, latitude, longitude, b'A')
+        lagna_degree = ascmc[0]
         lagna_rashi = int(lagna_degree / 30)
 
         rashi_names = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya",
@@ -71,10 +72,10 @@ def calculate_panchang():
         return jsonify(result)
 
     except Exception as e:
-        print("❌ Error:\n", traceback.format_exc())
+        print("❌ Exception occurred:\n", traceback.format_exc())
         return jsonify({"error": str(e)}), 500
 
-# Utility Functions
+# --- Helper Functions ---
 def get_nakshatra_lord(nakshatra):
     lords = ["Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"]
     return lords[(nakshatra - 1) % 9]
@@ -84,7 +85,7 @@ def get_solar_month(sun_long):
               "Tula", "Vrushchik", "Dhanu", "Makar", "Kumbh", "Meen"]
     return f"{months[int(sun_long / 30)]} (Solar Month)"
 
-# Main
+# --- Main ---
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
