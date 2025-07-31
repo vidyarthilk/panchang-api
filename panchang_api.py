@@ -43,15 +43,12 @@ def calculate_panchang():
         vikram_samvat = dt.year + 57
         mahino = get_solar_month(sun_long)
 
-        # Rashi Calculations
         lagna_degree = get_lagna_degree(jd, latitude, longitude)
-        asc = get_lagna_rashi(jd, latitude, longitude)
-        "lagna_rashi": rashi_names[asc],
+        asc = int(lagna_degree / 30)
         moon_rashi = int(moon_long / 30)
 
         rashi_names = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya",
-                       "Tula", "Vrushchik", "Dhanu", "Makar", "Kumbh", "Meen"]
-
+                      "Tula", "Vrushchik", "Dhanu", "Makar", "Kumbh", "Meen
         response = {
             "tithi": str(tithi),
             "nakshatra": get_nakshatra_name(nakshatra),
