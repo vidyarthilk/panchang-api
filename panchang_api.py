@@ -47,13 +47,15 @@ def calculate_panchang():
         # Vikram Samvat
         vikram_samvat = dt.year + 57
 
-        # Lagna
-        ascmc = swe.houses(jd, latitude, longitude)[1]
-        lagna_deg = ascmc[0]
-        lagna_rashi = rashi_names[int(lagna_deg / 30)]
+        # 🪐 Lagna (Ascendant)
+        _, ascmc = swe.houses_ex(jd, latitude, longitude, b'A')
+        asc_long = ascmc[0]  # Lagna degree
+        lagna_rashi_index = int(asc_long / 30) % 12
+        lagna_rashi = rashi_names[lagna_rashi_index]
 
-        # Chandra Rashi
-        chandra_rashi = rashi_names[int(moon_long / 30)]
+        # 🌙 Chandra Rashi (Moon Sign)
+        moon_rashi_index = int(moon_long / 30) % 12
+        chandra_rashi = rashi_names[moon_rashi_index]
 
         return jsonify({
             "tithi": tithi_name,
