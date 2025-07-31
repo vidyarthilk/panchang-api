@@ -27,7 +27,8 @@ def calculate_panchang():
 
         # Get longitudes (✅ Fixed unpacking)
         sun_long = swe.calc_ut(jd, swe.SUN)[0][0]
-        moon_long = swe.calc_ut(jd, swe.MOON)[0][0]
+        moon_calc = swe.calc_ut(jd, swe.MOON)
+        moon_long = moon_calc[0] if isinstance(moon_calc[0], float) else moon_calc[0][0]
 
         # Panchang Calculations
         tithi_deg = (moon_long - sun_long) % 360
