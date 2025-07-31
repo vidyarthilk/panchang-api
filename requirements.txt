@@ -1,2 +1,3 @@
-flask
-pyswisseph
+Flask==2.3.3
+pyswisseph==2.10.1
+gunicorn==21.2.0
