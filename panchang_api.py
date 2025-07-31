@@ -5,12 +5,13 @@ import traceback
 import os
 
 app = Flask(__name__)
-swe.set_ephe_path('.')  # eph files path
+swe.set_ephe_path('.')  # Set correct path for eph files
 
 @app.route('/calculate', methods=['POST'])
 def calculate_panchang():
     try:
         data = request.get_json(force=True)
+        print("🔥 Request received:", data)
 
         # Extract input
         date_str = data['date']
@@ -24,9 +25,9 @@ def calculate_panchang():
         dt = dt - datetime.timedelta(hours=timezone)
         jd = swe.julday(dt.year, dt.month, dt.day, dt.hour + dt.minute / 60.0)
 
-        # Get longitudes (extract only degree values)
-        sun_long = swe.calc_ut(jd, swe.SUN)[0]
-        moon_long = swe.calc_ut(jd, swe.MOON)[0]
+        # Get longitudes (✅ Fixed unpacking)
+        sun_long = swe.calc_ut(jd, swe.SUN)[0][0]
+        moon_long = swe.calc_ut(jd, swe.MOON)[0][0]
 
         # Panchang Calculations
         tithi_deg = (moon_long - sun_long) % 360
@@ -80,7 +81,7 @@ def get_solar_month(sun_longitude):
 
 def get_lagna_degree(jd, lat, lon):
     houses, ascmc = swe.houses_ex(jd, lat, lon, b'A')
-    return ascmc[0]  # ASC degree
+    return ascmc[0]  # 0 index is ASC (Lagna)
 
 # Main entry
 if __name__ == '__main__':
