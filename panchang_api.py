@@ -43,7 +43,11 @@ def calculate_panchang():
         yoga_num = int(yoga_sum / (360 / 27))
         yoga_name = yoga_list[yoga_num]
 
+<<<<<<< HEAD
         def get_hindu_month(sun_longitude, moon_longitude):
+=======
+       def get_hindu_month(sun_longitude, moon_longitude):
+>>>>>>> fad4a82bb5f9c23c9c547859a3f7e9b165cb8a52
         lunar_months = [
         "Chaitra", "Vaishakha", "Jyeshtha", "Ashadha", "Shravana", "Bhadrapada",
         "Ashwin", "Kartika", "Margashirsha", "Pausha", "Magha", "Phalguna"
