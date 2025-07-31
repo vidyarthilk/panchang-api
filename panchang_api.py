@@ -100,7 +100,11 @@ def get_solar_month(sun_longitude):
 def get_lagna_degree(jd, lat, lon):
     _, ascmc = swe.houses_ex(jd, lat, lon, b'A')
     return ascmc[0]
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 28283b09db268363e0e3f20fb0a15930692f246b
 def get_lagna_rashi(jd, lat, lon):
     # houses_ex returns (houses, ascmc) — ascmc[0] is ASC (Lagna degree)
     result = swe.houses_ex(jd, lat, lon, b'A')
