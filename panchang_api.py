@@ -20,8 +20,8 @@ def calculate_panchang():
         dt_utc = dt - datetime.timedelta(hours=timezone)
         jd = swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour + dt_utc.minute / 60)
 
-        sun_long = swe.calc_ut(jd, swe.SUN)[0][0]
-        moon_long = swe.calc_ut(jd, swe.MOON)[0][0]
+        sun_long = swe.calc_ut(jd, swe.SUN)[0]
+        moon_long = swe.calc_ut(jd, swe.MOON)[0]
 
         # Tithi Calculation
         tithi_deg = (moon_long - sun_long) % 360
