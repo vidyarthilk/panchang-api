@@ -4,15 +4,13 @@ import datetime
 import os
 
 app = Flask(__name__)
-swe.set_ephe_path("/usr/share/ephe")  # Change this if ephe path differs
+swe.set_ephe_path("/usr/share/ephe")
 
-def get_tithi(jd, moon_lon, sun_lon):
-    tithi = int(((moon_lon - sun_lon) % 360) / 12) + 1
-    return tithi
+def get_tithi(moon_lon, sun_lon):
+    return int(((moon_lon - sun_lon) % 360) / 12) + 1
 
 def get_nakshatra(moon_lon):
-    nakshatra = int(moon_lon / (360 / 27))
-    return nakshatra
+    return int(moon_lon / (360 / 27))
 
 def get_nakshatra_swami(nakshatra):
     swamis = [
@@ -20,10 +18,9 @@ def get_nakshatra_swami(nakshatra):
     ]
     return swamis[nakshatra % 9]
 
-def get_yoga(sun_lon, moon_lon):
-    total = (sun_lon + moon_lon) % 360
-    yoga = int(total / (360 / 27))
-    return yoga
+def get_yoga(moon_lon, sun_lon):
+    total = (moon_lon + sun_lon) % 360
+    return int(total / (360 / 27))
 
 def get_lagna_rashi(jd, lat, lon):
     try:
@@ -32,7 +29,7 @@ def get_lagna_rashi(jd, lat, lon):
         return int(asc / 30)
     except Exception as e:
         print("Error in get_lagna_rashi:", e)
-        return 0  # Default to Mesha
+        return 0
 
 @app.route('/calculate', methods=['POST'])
 def calculate():
@@ -45,7 +42,6 @@ def calculate():
         longitude = data.get("longitude")
         timezone = float(data.get("timezone"))
 
-        # Convert to UTC datetime
         dt = datetime.datetime.strptime(f"{date} {time}", "%Y-%m-%d %H:%M")
         dt = dt - datetime.timedelta(hours=timezone)
         jd = swe.julday(dt.year, dt.month, dt.day, dt.hour + dt.minute / 60.0)
@@ -53,10 +49,9 @@ def calculate():
         sun_lon, _ = swe.calc_ut(jd, swe.SUN)
         moon_lon, _ = swe.calc_ut(jd, swe.MOON)
 
-        tithi = get_tithi(jd, moon_lon, sun_lon)
+        tithi = get_tithi(moon_lon, sun_lon)
         nakshatra_num = get_nakshatra(moon_lon)
-        yoga_num = get_yoga(sun_lon, moon_lon)
-
+        yoga_num = get_yoga(moon_lon, sun_lon)
         chandra_rashi = int(moon_lon / 30)
         lagna_rashi = get_lagna_rashi(jd, latitude, longitude)
 
@@ -67,7 +62,7 @@ def calculate():
         nakshatra_swami = get_nakshatra_swami(nakshatra_num)
 
         return jsonify({
-            "tithi": tithi,
+            "tithi": f"Tithi {tithi}",
             "nakshatra": nakshatra_name,
             "nakshatra_swami": nakshatra_swami,
             "yoga": f"Yoga {yoga_num}",
