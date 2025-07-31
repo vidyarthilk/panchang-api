@@ -43,15 +43,13 @@ def calculate_panchang():
         yoga_num = int(yoga_sum / (360 / 27))
         yoga_name = yoga_list[yoga_num]
 
-        def get_lunar_month(moon_longitude):
-        # Chandra Maas as per Nakshatra Moon Sign
+       def get_hindu_month(sun_longitude, moon_longitude):
         lunar_months = [
-        "Chaitra", "Vaishakh", "Jyeshtha", "Ashadha",
-        "Shravana", "Bhadrapada", "Ashwin", "Kartik",
-        "Margashirsha", "Pausha", "Magha", "Phalguna"
-    ]
-    index = int(moon_longitude / 30)
-    return f"{lunar_months[index]} (Lunar Month)"
+        "Chaitra", "Vaishakha", "Jyeshtha", "Ashadha", "Shravana", "Bhadrapada",
+        "Ashwin", "Kartika", "Margashirsha", "Pausha", "Magha", "Phalguna"
+        ]
+        index = int((moon_longitude - sun_longitude) % 360 / 30)
+        return lunar_months[index]
 
 
         # Vikram Samvat
