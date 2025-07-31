@@ -1,11 +1,10 @@
 services:
   - type: web
     name: panchang-api
-    env: python
-    plan: free
+    runtime: python
     buildCommand: ""
-    startCommand: gunicorn panchang_api:app
+    startCommand: python panchang_api.py
     envVars:
       - key: PYTHON_VERSION
         value: 3.10
-    autoDeploy: true
+    plan: free
