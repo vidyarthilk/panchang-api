@@ -43,7 +43,8 @@ def calculate_panchang():
         mahino = get_solar_month(sun_long)
 
         # Rashi Calculations
-        asc = get_lagna_rashi(jd, latitude, longitude)
+        lagna_degree = get_lagna_degree(jd, latitude, longitude)
+        asc = int(lagna_degree / 30)
         moon_rashi = int(moon_long / 30)
 
         rashi_names = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya",
@@ -78,9 +79,9 @@ def get_solar_month(sun_longitude):
     month_index = int(sun_longitude / 30)
     return f"{months[month_index]} (Solar Month)"
 
-def get_lagna_rashi(jd, lat, lon):
-    asc = swe.houses_ex(jd, lat, lon, b'A')[0][0]
-    return int(asc / 30)
+def get_lagna_degree(jd, lat, lon):
+    houses, ascmc = swe.houses_ex(jd, lat, lon, b'A')
+    return ascmc[0]  # 0 index is ASC (Lagna)
 
 # Main entry
 if __name__ == '__main__':
