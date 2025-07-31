@@ -65,8 +65,9 @@ def calculate_panchang():
             "yoga": yoga_name,
             "mahino": mahino,
             "vikram_samvat": str(vikram_samvat),
+            "chandra_rashi": chandra_rashi,
             "lagna_rashi": lagna_rashi,
-            "chandra_rashi": chandra_rashi
+
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
