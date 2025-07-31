@@ -26,8 +26,9 @@ def calculate_panchang():
         jd = swe.julday(dt.year, dt.month, dt.day, dt.hour + dt.minute / 60.0)
 
         # Get longitudes (✅ Fixed unpacking)
-        sun_long = swe.calc_ut(jd, swe.SUN)[0][0]
-        moon_long = swe.calc_ut(jd, swe.MOON)[0][0]
+        sun_long = swe.calc_ut(jd, swe.SUN)[0]
+        moon_long = swe.calc_ut(jd, swe.MOON)[0]
+
 
         # Panchang Calculations
         tithi_deg = (moon_long - sun_long) % 360
