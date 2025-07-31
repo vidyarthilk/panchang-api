@@ -48,19 +48,18 @@ def calculate_panchang():
         moon_rashi = int(moon_long / 30)
 
         rashi_names = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya",
-                      "Tula", "Vrushchik", "Dhanu", "Makar", "Kumbh", "Meen"]
-
+                      "Tula", "Vrushchik", "Dhanu", "Makar", "Kumbh", "Meen"]  
         response = {
-    "tithi": str(tithi),
-    "nakshatra": f"Nakshatra {nakshatra}",
-    "nakshatra_swami": nakshatra_swami,
-    "yoga": f"Yoga {yoga}",
-    "paksha": paksha,
-    "vikram_samvat": str(vikram_samvat),
-    "mahino": mahino,
-    "lagna_rashi": rashi_names[asc],
-    "chandra_rashi": rashi_names[moon_rashi]
-}
+           "tithi": str(tithi),
+           "nakshatra": f"Nakshatra {nakshatra}",
+           "nakshatra_swami": nakshatra_swami,
+           "yoga": f"Yoga {yoga}",
+           "paksha": paksha,
+           "vikram_samvat": str(vikram_samvat),
+           "mahino": mahino,
+           "lagna_rashi": rashi_names[asc],
+           "chandra_rashi": rashi_names[moon_rashi]
+        }
 
         return jsonify(response)
 
