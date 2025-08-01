@@ -59,8 +59,9 @@ def calculate():
         swe.set_sid_mode(swe.SIDM_LAHIRI)
 
         # Tithi
-        sun_long = swe.calc_ut(jd, swe.SUN)[0]
-        moon_long = swe.calc_ut(jd, swe.MOON)[0]
+        sun_long = swe.calc_ut(jd, swe.SUN)[0][0]
+        moon_long = swe.calc_ut(jd, swe.MOON)[0][0]
+
       
         print("DEBUG sun_long:", sun_long, type(sun_long))
         print("DEBUG moon_long:", moon_long, type(moon_long))
