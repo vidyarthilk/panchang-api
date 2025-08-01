@@ -23,6 +23,10 @@ YOGA_NAMES = ['વિષ્કુંબ', 'પ્રિતી', 'આયુષ્
 TITHI_NAMES = ['પ્રથમા', 'દ્વિતીયા', 'તૃતીયા', 'ચતુર્થી', 'પંચમી', 'ષષ્ટી', 'સપ્તમી',
                'અષ્ટમી', 'નવમી', 'દશમી', 'એકાદશી', 'દ્વાદશી', 'ત્રયોદશી', 'ચતુર્દશી', 'પૂર્ણિમા/અમાવસ્યા']
 
+@app.route("/")
+def home():
+    return "Panchang API is running", 200
+  
 @app.route("/calculate", methods=["POST"])
 def calculate():
     try:
