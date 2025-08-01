@@ -3,7 +3,7 @@ services:
     name: panchang-api
     runtime: python
     buildCommand: ""
-    startCommand: python panchang_api.py
+    startCommand: python src/panchang_api.py
     envVars:
       - key: PYTHON_VERSION
         value: 3.10
