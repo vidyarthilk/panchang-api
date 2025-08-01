@@ -49,6 +49,9 @@ def calculate():
         # Tithi
         sun_long = swe.calc_ut(jd, swe.SUN)[0]
         moon_long = swe.calc_ut(jd, swe.MOON)[0]
+        print("DEBUG sun_long:", sun_long, type(sun_long))
+        print("DEBUG moon_long:", moon_long, type(moon_long))
+
         tithi_float = ((moon_long - sun_long) % 360) / 12
         tithi_index = int(tithi_float)
         tithi_name = TITHI_NAMES[tithi_index % 15]
