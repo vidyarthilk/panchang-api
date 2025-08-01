@@ -99,7 +99,4 @@ def calculate():
         })
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
-<<<<<<< HEAD
 
-=======
->>>>>>> 1ba49c5a97a07d8d2009cfa4a767cf60c83ef301
