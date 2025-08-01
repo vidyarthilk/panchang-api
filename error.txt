@@ -1,355 +1,93 @@
-F:\astro_data\astro_data\panchang-python>from flask import Flask, request, jsonify
-'from' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>import swisseph as swe
-'import' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>import datetime
-'import' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>import os
-'import' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>app = Flask(__name__)
-'app' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>swe.set_ephe_path(".")
-'swe.set_ephe_path' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>@app.route("/calculate", methods=["POST"])
-'app.route' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>def calculate_panchang():
-'def' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    try:
-'try:' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        data = request.get_json(force=True)
-'data' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        date_str = data["date"]
-'date_str' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        time_str = data["time"]
-'time_str' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        latitude = float(data["latitude"])
-'latitude' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        longitude = float(data["longitude"])
-'longitude' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        timezone = float(data["timezone"])
-'timezone' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        dt = datetime.datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
-'dt' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        dt_utc = dt - datetime.timedelta(hours=timezone)
-'dt_utc' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        jd = swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour + dt_utc.minute / 60)
-'jd' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        sun_long = swe.calc_ut(jd, swe.SUN)[0][0]
-'sun_long' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        moon_long = swe.calc_ut(jd, swe.MOON)[0][0]
-'moon_long' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        # Tithi Calculation
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        tithi_deg = (moon_long - sun_long) % 360
-'tithi_deg' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        tithi_num = int(tithi_deg / 12)
-'tithi_num' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        tithi_name = tithi_list[tithi_num]
-'tithi_name' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        # Paksha
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        paksha = "Shukla" if tithi_num < 15 else "Krishna"
-The system cannot find the file specified.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        # Nakshatra
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        nak_num = int((moon_long % 360) / (360 / 27))
-'nak_num' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        nakshatra_name = nakshatra_list[nak_num]
-'nakshatra_name' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        nakshatra_swami = get_nakshatra_lord(nak_num + 1)
-'nakshatra_swami' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        # Yoga
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        yoga_sum = (sun_long + moon_long) % 360
-'yoga_sum' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        yoga_num = int(yoga_sum / (360 / 27))
-'yoga_num' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        yoga_name = yoga_list[yoga_num]
-'yoga_name' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        # Solar Month
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        mahino = f"{rashi_names[int(sun_long / 30)]} (Solar Month)"
-'mahino' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        # Vikram Samvat
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        vikram_samvat = dt.year + 57
-'vikram_samvat' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        # Lagna
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        ascmc = swe.houses(jd, latitude, longitude)[1]
-'ascmc' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        lagna_deg = ascmc[0]
-'lagna_deg' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        lagna_rashi = rashi_names[int(lagna_deg / 30)]
-'lagna_rashi' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        # Chandra Rashi
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        chandra_rashi = rashi_names[int(moon_long / 30)]
-'chandra_rashi' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>        return jsonify({
-'return' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "tithi": tithi_name,
-'"tithi":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "paksha": paksha,
-'"paksha":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "nakshatra": nakshatra_name,
-'"nakshatra":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "nakshatra_swami": nakshatra_swami,
-'"nakshatra_swami":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "yoga": yoga_name,
-'"yoga":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "mahino": mahino,
-'"mahino":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "vikram_samvat": str(vikram_samvat),
-'"vikram_samvat":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "lagna_rashi": lagna_rashi,
-'"lagna_rashi":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>            "chandra_rashi": chandra_rashi
-'"chandra_rashi":' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        })
-'})' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    except Exception as e:
-'except' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>        return jsonify({"error": str(e)}), 500
-'return' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python># Lists
-'#' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>rashi_names = ["Mesha", "Vrushabh", "Mithun", "Kark", "Sinh", "Kanya", "Tula", "Vrushchik", "Dhanu", "Makar", "Kumbh", "Meen"]
-'rashi_names' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>tithi_list = [
-'tithi_list' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashti",
-'"Pratipada"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi",
-'"Saptami"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Trayodashi", "Chaturdashi", "Purnima", "Pratipada", "Dwitiya", "Tritiya",
-'"Trayodashi"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Chaturthi", "Panchami", "Shashti", "Saptami", "Ashtami", "Navami",
-'"Chaturthi"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Amavasya"
-'"Dashami"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>]
-']' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>nakshatra_list = [
-'nakshatra_list' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra",
-'"Ashwini"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni",
-'"Punarvasu"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula",
-'"Hasta"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha",
-'"Purva Ashadha"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"
-'"Purva Bhadrapada"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>]
-']' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>yoga_list = [
-'yoga_list' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Vishkumbha", "Preeti", "Ayushman", "Saubhagya", "Shobhana", "Atiganda",
-'"Vishkumbha"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Sukarma", "Dhriti", "Shoola", "Ganda", "Vriddhi", "Dhruva", "Vyaghata",
-'"Sukarma"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Harshana", "Vajra", "Siddhi", "Vyatipata", "Variyana", "Parigha",
-'"Harshana"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    "Shiva", "Siddha", "Sadhya", "Shubha", "Shukla", "Brahma", "Indra", "Vaidhriti"
-'"Shiva"' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>]
-']' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>def get_nakshatra_lord(nak_num):
-'def' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    lords = ["Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"]
-'lords' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    return lords[(nak_num - 1) % 9]
-'return' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>
-F:\astro_data\astro_data\panchang-python>if __name__ == "__main__":
-The syntax of the command is incorrect.
-F:\astro_data\astro_data\panchang-python>    port = int(os.environ.get("PORT", 10000))
-'port' is not recognized as an internal or external command,
-operable program or batch file.
-
-F:\astro_data\astro_data\panchang-python>    app.run(host="0.0.0.0", port=port)
-'app.run' is not recognized as an internal or external command,
-operable program or batch file.
+from flask import Flask, request, jsonify
+import swisseph as swe
+import datetime
+
+app = Flask(__name__)
+
+RASHI_NAMES = ['મેષ', 'વૃષભ', 'મિથુન', 'કર્ક', 'સિંહ', 'કન્યા',
+               'તુલા', 'વૃશ્ચિક', 'ધન', 'મકર', 'કુંભ', 'મીન']
+
+NAKSHATRA_NAMES = ['અશ્વિની', 'ભરણી', 'કૃતિકા', 'રોહિણી', 'મૃગશિર્ષ', 'આર્દ્રા',
+                   'પુનર્વસુ', 'પુષ્ય', 'આશ્લેષા', 'મઘા', 'પૂર્વા ફાલ્ગુની', 'ઉત્તરા ફાલ્ગુની',
+                   'હસ્ત', 'ચિત્રા', 'સ્વાતિ', 'વિશાખા', 'અનુરાધા', 'જ્યેષ્ઠા',
+                   'મૂળ', 'પૂર્વાષાઢા', 'ઉત્તરાષાઢા', 'શ્રવણ', 'ધનિષ્ઠા', 'શતભિષા',
+                   'પૂર્વા ભાદ્રપદ', 'ઉત્તરા ભાદ્રપદ', 'રેવતી']
+
+YOGA_NAMES = ['વિષ્કુંબ', 'પ્રિતી', 'આયુષ્માન', 'સૌભાગ્ય', 'શોબન', 'અતિગંડ',
+              'સુકર્મા', 'ધૃતિ', 'શૂલ', 'ગંડ', 'વૃદ્ધિ', 'ધ્રુવ', 'વ્યાઘાત', 'હરષણ',
+              'વજર', 'સિદ્ધિ', 'વ્યતિપાત', 'વારિયાણ', 'પરિઘ', 'શિવ', 'સિદ્ધ', 'સાધ્ય',
+              'શુભ', 'શુક્લ', 'બ્રહ્મ', 'ઇન્દ્ર', ' વૈધૃતિ']
+
+TITHI_NAMES = ['પ્રથમા', 'દ્વિતીયા', 'તૃતીયા', 'ચતુર્થી', 'પંચમી', 'ષષ્ટી', 'સપ્તમી',
+               'અષ્ટમી', 'નવમી', 'દશમી', 'એકાદશી', 'દ્વાદશી', 'ત્રયોદશી', 'ચતુર્દશી', 'પૂર્ણિમા/અમાવસ્યા']
+
+@app.route("/calculate", methods=["POST"])
+def calculate():
+    try:
+        data = request.get_json()
+
+        date_str = data["date"]  # "YYYY-MM-DD"
+        time_str = data["time"]  # "HH:MM"
+        latitude = float(data["latitude"])
+        longitude = float(data["longitude"])
+        timezone = float(data["timezone"])  # e.g., 5.5
+
+        # Convert to UTC
+        dt = datetime.datetime.strptime(date_str + " " + time_str, "%Y-%m-%d %H:%M")
+        dt_utc = dt - datetime.timedelta(hours=timezone)
+
+        year = dt_utc.year
+        month = dt_utc.month
+        day = dt_utc.day
+        hour = dt_utc.hour + dt_utc.minute / 60.0
+
+        jd = swe.julday(year, month, day, hour)
+        swe.set_topo(longitude, latitude, 0)
+        swe.set_sid_mode(swe.SIDM_LAHIRI)
+
+        # Tithi
+        sun_long = swe.calc_ut(jd, swe.SUN)[0]
+        moon_long = swe.calc_ut(jd, swe.MOON)[0]
+        tithi_float = ((moon_long - sun_long) % 360) / 12
+        tithi_index = int(tithi_float)
+        tithi_name = TITHI_NAMES[tithi_index % 15]
+
+        # Nakshatra
+        nakshatra_float = (moon_long % 360) / (360 / 27)
+        nakshatra_index = int(nakshatra_float)
+        nakshatra_name = NAKSHATRA_NAMES[nakshatra_index]
+
+        # Yoga
+        yoga_float = ((sun_long + moon_long) % 360) / (360 / 27)
+        yoga_index = int(yoga_float)
+        yoga_name = YOGA_NAMES[yoga_index]
+
+        # Karana
+        karana_index = int((tithi_float % 1) * 2)
+        karana_name = "કરણ " + str(karana_index + 1)
+
+        # Chandra Rashi
+        chandra_rashi_index = int(moon_long / 30)
+        chandra_rashi = RASHI_NAMES[chandra_rashi_index]
+
+        # Lagna Rashi
+        asc = swe.houses(jd, latitude, longitude, 'P')[0][0]
+        lagna_rashi_index = int(asc / 30)
+        lagna_rashi = RASHI_NAMES[lagna_rashi_index]
+
+        return jsonify({
+            "tithi": tithi_name,
+            "nakshatra": nakshatra_name,
+            "yoga": yoga_name,
+            "karana": karana_name,
+            "chandra_rashi": chandra_rashi,
+            "lagna_rashi": lagna_rashi
+        })
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e),
+            "trace": traceback.format_exc()
+        })
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
