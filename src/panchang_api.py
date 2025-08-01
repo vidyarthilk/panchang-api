@@ -91,7 +91,7 @@ def calculate():
         chandra_rashi = RASHI_NAMES[chandra_rashi_index]
 
         # Lagna Rashi
-        asc = swe.houses(jd, latitude, longitude, 'P')[0][0]
+        asc = swe.houses(jd, latitude, longitude, b'P')[0][0]
         lagna_rashi_index = int(asc / 30)
         lagna_rashi = RASHI_NAMES[lagna_rashi_index]
 
