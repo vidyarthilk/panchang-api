@@ -26,6 +26,13 @@ TITHI_NAMES = ['પ્રથમા', 'દ્વિતીયા', 'તૃતી�
 @app.route("/calculate", methods=["POST"])
 def calculate():
     try:
+        print("===== DEBUG START =====")
+        print("HEADERS:", request.headers)
+        print("RAW BODY:", request.data)
+        data = request.get_json(force=True)
+        print("JSON PARSED:", data)
+        print("===== DEBUG END =====")
+      
         data = request.get_json()
 
         date_str = data["date"]  # "YYYY-MM-DD"
