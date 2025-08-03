@@ -72,10 +72,14 @@ def calculate():
         tithi_index = int(tithi_float)
         tithi_name = TITHI_NAMES[tithi_index % 15]
 
-        # Nakshatra
+        paksha = "શુક્લ પક્ષ" if tithi_index < 15 else "કૃષ્ણ પક્ષ"
+
+        # Nakshatra + Swami
         nakshatra_float = (moon_long % 360) / (360 / 27)
         nakshatra_index = int(nakshatra_float)
         nakshatra_name = NAKSHATRA_NAMES[nakshatra_index]
+        nakshatra_lords = ['કેતુ', 'શુક્ર', 'સૂર્ય', 'ચંદ્ર', 'મંગળ', 'રાહુ', 'બુધ', 'ગુરુ', 'શનિ']
+        nakshatra_swami = nakshatra_lords[nakshatra_index % 9]
 
         # Yoga
         yoga_float = ((sun_long + moon_long) % 360) / (360 / 27)
@@ -95,15 +99,27 @@ def calculate():
         lagna_rashi_index = int(asc / 30)
         lagna_rashi = RASHI_NAMES[lagna_rashi_index]
 
+        # Mahino (Hindu lunar month based on sun-moon conjunction)
+        lunar_month = (int((moon_long - sun_long) / 30) + 1) % 12
+        MAHINO_NAMES = ['ચૈત્ર', 'વૈશાખ', 'જેઠ', 'અષાઢ', 'શ્રાવણ', 'ભાદરવો',
+                        'આસો', 'કારતક', 'માગશર', 'પોષ', 'માહ', 'ફાગણ']
+        mahino = MAHINO_NAMES[lunar_month]
+
+        # Vikram Samvat calculation (57 years ahead of AD)
+        vikram_samvat = str(year + 57)
+
         return jsonify({
             "tithi": tithi_name,
             "nakshatra": nakshatra_name,
             "yoga": yoga_name,
             "karana": karana_name,
             "chandra_rashi": chandra_rashi,
-            "lagna_rashi": lagna_rashi
+            "lagna_rashi": lagna_rashi,
+            "mahino": mahino,
+            "paksha": paksha,
+            "vikram_samvat": vikram_samvat,
+            "nakshatra_swami": nakshatra_swami
         })
-
     except Exception as e:
         return jsonify({
             "error": str(e),
