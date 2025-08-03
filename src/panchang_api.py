@@ -58,7 +58,7 @@ def calculate():
 
     # Chandra Rashi
     moon_result = swe.calc_ut(jd, swe.MOON)
-    moon_long = moon_result[0]
+    moon_long = moon_result[0][0}
     chandra_rashi = rashi_names[int(moon_long // 30)]
 
     # Lagna Rashi
