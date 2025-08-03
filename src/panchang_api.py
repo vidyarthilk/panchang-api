@@ -22,9 +22,7 @@ YOGA_NAMES = ['વિષ્કુંબ', 'પ્રિતી', 'આયુષ્
 
 TITHI_NAMES = ['પ્રથમા', 'દ્વિતીયા', 'તૃતીયા', 'ચતુર્થી', 'પંચમી', 'ષષ્ટી', 'સપ્તમી',
                'અષ્ટમી', 'નવમી', 'દશમી', 'એકાદશી', 'દ્વાદશી', 'ત્રયોદશી', 'ચતુર્દશી', 'પૂર્ણિમા/અમાવસ્યા']
-KARANA_NAMES = [
-    "બાવ", "બાલવ", "કૌલવ", "તૈતિલ", "ગરજ", "વણિજ", "વિષ્ટિ",   # 1 to 7 (repeat 8x)
-    "શકુનિ", "ચતુષ્પદ", "નાગ", "કિસ્તુઘ્ન"]
+
 
 @app.route("/")
 def home():
@@ -90,12 +88,19 @@ def calculate():
         yoga_name = YOGA_NAMES[yoga_index]
 
         # Karana
-        karana_index = int((tithi_float % 1) * 2)  # 0 or 1 for each tithi
-        tithi_number = int(tithi_float)  # 0-based index for tithi
-    if karana_pos < 56:
-        karana_name = karana_names[karana_pos % 7]  # Repeat first 7 karanas
-    else:
-        karana_name = karana_names[karana_pos - 49]  # Last 4 karanas
+                # Karana
+        karana_names = [
+            "બાવ", "બાલવ", "કૌલવ", "તૈતિલ", "ગરજ", "વણિજ", "વિષ્ટિ",  # 1 to 7 (repeat)
+            "શકુનિ", "ચતુષ્પદ", "નાગ", "કિસ્તુઘ્ન"                    # fixed last 4
+        ]
+        karana_index = int((tithi_float % 1) * 2)
+        karana_number = tithi_index * 2 + karana_index
+
+        if karana_number < 56:
+            karana_name = karana_names[karana_number % 7]  # 0–55 → cyclic first 7
+        else:
+            karana_name = karana_names[7 + (karana_number - 56)]  # 56–59 → fixed last 4
+
 
         # Chandra Rashi
         chandra_rashi_index = int(moon_long / 30)
