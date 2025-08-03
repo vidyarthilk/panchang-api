@@ -61,6 +61,7 @@ def calculate():
     moon_long = moon_result[0][0}
     chandra_rashi = rashi_names[int(moon_long // 30)]
 
+
     # Lagna Rashi
     houses, asc = swe.houses(jd, latitude, longitude)
     lagna_rashi = rashi_names[int(asc // 30)]
