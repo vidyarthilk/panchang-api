@@ -1,3 +1,4 @@
-Flask==2.3.3
-pyswisseph==2.10.3.2
-gunicorn==21.2.0
+Flask
+flask-cors
+pyswisseph
+pytz
